@@ -1,4 +1,6 @@
-package model;
+package model.user;
+
+import model.user.Address;
 
 public class User {
     private int userID;
