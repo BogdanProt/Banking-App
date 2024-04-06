@@ -63,9 +63,9 @@ public class Account implements Comparator<Transaction>{
         return "Account{" +
                 "IBAN='" + IBAN + '\'' +
                 ", swift='" + swift + '\'' +
-                ", amount=" + balance +
+                ", balance=" + balance +
                 ", name='" + name + '\'' +
-                ", customerId=" + userID +
+                ", userID=" + userID +
                 '}';
     }
 }
