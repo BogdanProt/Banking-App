@@ -43,7 +43,7 @@ public class Account implements Comparator<Transaction>{
 
     public List<Card> getCards() { return cards; }
 
-    
+
     public int compare(Transaction transaction1, Transaction transaction2){
         return transaction1.getIssuedDate().compareTo(transaction2.getIssuedDate());
     }
