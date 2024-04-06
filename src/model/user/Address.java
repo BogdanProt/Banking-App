@@ -22,17 +22,17 @@ public class Address {
         this.read(in);
     }
 
-    public void read (Scanner in) {
+    public void read (Scanner scanner) {
         System.out.println("Country: ");
-        country = in.nextLine().toLowerCase();
+        country = scanner.nextLine().toLowerCase();
         System.out.println("County: ");
-        county = in.nextLine().toLowerCase();
+        county = scanner.nextLine().toLowerCase();
         System.out.println("City: ");
-        city = in.nextLine().toLowerCase();
+        city = scanner.nextLine().toLowerCase();
         System.out.println("Street: ");
-        street = in.nextLine().toLowerCase();
+        street = scanner.nextLine().toLowerCase();
         System.out.println("Postal code: ");
-        postalCode = in.nextInt();
+        postalCode = scanner.nextInt();
     }
 
     public String getCountry() { return country; }

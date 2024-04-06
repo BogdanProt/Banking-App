@@ -5,6 +5,7 @@ import model.card.*;
 import model.account.*;
 import java.util.*;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 
 public class User {
@@ -24,6 +25,26 @@ public class User {
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
         this.address = address;
+    }
+
+    public User(int userID, Scanner scanner) throws ParseException {
+        this.userID = userID;
+        this.read(scanner);
+    }
+
+    public void read(Scanner scanner) throws ParseException{
+        System.out.println("First name: ");
+        this.firstName = scanner.nextLine();
+        System.out.println("Last name: ");
+        this.lastName = scanner.nextLine();
+        System.out.println("CNP: ");
+        this.CNP = scanner.nextLine();
+        System.out.println("Email: ");
+        this.emailAddress = scanner.nextLine();
+        System.out.println("Phone: ");
+        this.phoneNumber = scanner.nextLine();
+        System.out.println("Address: ");
+        this.address = new Address(scanner);
     }
 
 
