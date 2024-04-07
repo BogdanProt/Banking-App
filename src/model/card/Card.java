@@ -88,4 +88,16 @@ public class Card {
         return random.nextInt(900) + 100;
     }
 
+    @Override
+    public String toString() {
+        return "Card{" +
+                "ID='" + cardID + '\'' +
+                ", CVV='" + CVV + '\'' +
+                ", Number=" + cardNumber +
+                ", Name='" + name + '\'' +
+                ", IBAN=" + IBAN +
+                ", Expiration Date=" + (new SimpleDateFormat("yyyy-MM-dd+HH:mm:ss")).format(expirationDate) +
+                '}';
+    }
+
 }
