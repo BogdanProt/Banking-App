@@ -10,10 +10,10 @@ public class TransactionDAO {
 
     private static List<Transaction> transactions = new ArrayList<>();
 
-    public Transaction read(Date date) {
+    public Transaction read(String fromIBAN) {
         if (!transactions.isEmpty()) {
             for (Transaction trans : transactions) {
-                if (date == trans.getIssuedDate()) {
+                if (fromIBAN == trans.getFromIBAN()) {
                     return trans;
                 }
             }
