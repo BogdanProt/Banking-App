@@ -8,10 +8,10 @@ public class SavingsAccountDAO {
 
     private static List<SavingsAccount> savingsAccounts = new ArrayList<>();
 
-    public SavingsAccount read(int userID) {
+    public SavingsAccount read(String IBAN) {
         if (!savingsAccounts.isEmpty()) {
             for (SavingsAccount sacc : savingsAccounts) {
-                if (sacc.getUserID() == userID) {
+                if (sacc.getIBAN().equals(IBAN)) {
                     return sacc;
                 }
             }
@@ -26,4 +26,6 @@ public class SavingsAccountDAO {
     public void create(SavingsAccount savingsAccount) {
         savingsAccounts.add(savingsAccount);
     }
+
+    public List<SavingsAccount> getSavingsAccounts() { return savingsAccounts; }
 }

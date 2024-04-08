@@ -6,6 +6,8 @@ import model.account.*;
 import model.user.*;
 import utils.*;
 
+import java.util.List;
+
 public class AccountRepositoryService {
 
     private AccountDAO accountDAO;
@@ -16,8 +18,8 @@ public class AccountRepositoryService {
         this.savingsAccountDAO = new SavingsAccountDAO();
     }
 
-    public Account getAccountByID(int userID) {
-        Account account = accountDAO.read(userID);
+    public Account getAccountByIBAN(String IBAN) {
+        Account account = accountDAO.read(IBAN);
         if (account != null) {
             System.out.println(account);
         } else {
@@ -27,8 +29,8 @@ public class AccountRepositoryService {
         return account;
     }
 
-    public SavingsAccount getSavingsAccountByID(int userID) {
-        SavingsAccount savingsAccount = savingsAccountDAO.read(userID);
+    public SavingsAccount getSavingsAccountByIBAN(String IBAN) {
+        SavingsAccount savingsAccount = savingsAccountDAO.read(IBAN);
         if (savingsAccount != null) {
             System.out.println(savingsAccount);
         } else {
@@ -38,8 +40,8 @@ public class AccountRepositoryService {
         return savingsAccount;
     }
 
-    public void removeAccount(String typeOfAccount, int userID) {
-        Account account = getAccountByType(typeOfAccount, userID);
+    public void removeAccount(String typeOfAccount, String IBAN) {
+        Account account = getAccountByType(typeOfAccount, IBAN);
         if (account == null) return;
 
         switch (account.getClass().getSimpleName()) {
@@ -73,18 +75,36 @@ public class AccountRepositoryService {
         System.out.println("Added: " + account);
     }
 
-    public Account getAccountByType(String typeOfAccount, int userID) {
+    public Account getAccountByType(String typeOfAccount, String IBAN) {
         Account account;
         if (typeOfAccount.toLowerCase().equals("account")) {
-            account = getAccountByID(userID);
+            account = getAccountByIBAN(IBAN);
         } else if (typeOfAccount.toLowerCase().equals("savingsaccount")) {
-            account = getSavingsAccountByID(userID);
+            account = getAccountByIBAN(IBAN);
         }
         if (account == null) {
-            System.out.println("No account having id: " + userID);
+            System.out.println("No account having IBAN: " + IBAN);
             return null;
         }
         return account;
+    }
+
+    public List<Account> getAllAccounts() {
+        if (!accountDAO.getAccounts().isEmpty()) {
+            return accountDAO.getAccounts();
+        } else {
+            System.out.println("No accounts registered!");
+        }
+        return null;
+    }
+
+    public List<SavingsAccount> getAllSavingsAccounts() {
+        if (!savingsAccountDAO.getSavingsAccounts().isEmpty()) {
+            return savingsAccountDAO.getSavingsAccounts();
+        } else {
+            System.out.println("No savings accounts registered!");
+        }
+        return null;
     }
 
 }

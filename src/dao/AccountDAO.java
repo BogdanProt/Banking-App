@@ -9,10 +9,10 @@ public class AccountDAO {
 
     private static List<Account> accounts = new ArrayList<>();
 
-    public Account read(int userID) {
+    public Account read(String IBAN) {
         if (!accounts.isEmpty()){
             for(Account acc : accounts) {
-                if (acc.getUserID() == userID) {
+                if (acc.getIBAN().equals(IBAN)) {
                     return acc;
                 }
             }
@@ -28,5 +28,5 @@ public class AccountDAO {
         accounts.add(account);
     }
 
-    public int getSize() { return accounts.size(); }
+    public List<Account> getAccounts() { return accounts; }
 }

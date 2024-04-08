@@ -47,6 +47,17 @@ public class User {
         this.address = new Address(scanner);
     }
 
+    public List<Account> filterAccounts(List<Account> allAccounts) {
+        var accounts = new ArrayList<Account>();
+        for (var account : allAccounts) {
+            if (account.getUserID() == this.userID) {
+                accounts.add(account);
+            }
+        }
+        return accounts;
+
+    }
+
 
     // Setters
     public void setUserID(int userID) { this.userID = userID; }
