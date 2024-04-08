@@ -27,4 +27,6 @@ public class AccountDAO {
     public void create(Account account) {
         accounts.add(account);
     }
+
+    public int getSize() { return accounts.size(); }
 }

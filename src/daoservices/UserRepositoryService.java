@@ -45,4 +45,12 @@ public class UserRepositoryService {
 
         System.out.println("Removed " + user);
     }
+
+    public int getNumberOfUsers() {
+        if (userDAO.getSize() < 1) {
+            return 0;
+        } else {
+            return userDAO.getSize();
+        }
+    }
 }

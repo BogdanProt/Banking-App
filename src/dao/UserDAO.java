@@ -26,4 +26,6 @@ public class UserDAO {
     public void create(User u) {
         users.add(u);
     }
+
+    public int getSize() { return users.size(); }
 }
