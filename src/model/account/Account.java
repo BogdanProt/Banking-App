@@ -48,6 +48,35 @@ public class Account implements Comparator<Transaction>{
         return transaction1.getIssuedDate().compareTo(transaction2.getIssuedDate());
     }
 
+    public List<Transaction> getTransactionsPerUser(List<Transaction> allTransactions) {
+        List<Transaction> transactions = new ArrayList<>();
+
+        for (Transaction transaction : allTransactions) {
+            if (transaction.getFromIBAN().equals(this.IBAN)) {
+                transactions.add(transaction);
+            }
+        }
+
+        return transactions;
+    }
+public List<Transaction> getTransactionsPerUserByYear(List<Transaction> allTransactions, int year) {
+        List<Transaction> transactions = new ArrayList<>();
+
+        for(Transaction transaction : allTransactions) {
+            if (transaction.getFromIBAN().equals(this.IBAN) && transaction.getIssuedDate().getYear() == year) {
+                transactions.add(transaction);
+            }
+        }
+
+        return transactions;
+}
+
+
+    public void addCard(String name) {
+        Card card = cardSeparation.addCard(this.IBAN, name);
+        cards.add(card);
+    }
+
     private String IBANGenerator(int uniqueID) {
         String bankCode = "RZBR";
         return "RO67" + bankCode + "R" + uniqueID;
