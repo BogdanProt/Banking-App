@@ -64,7 +64,7 @@ public class CardRepositoryService {
     }
 
     public Card getCard(String typeOfCard, int cardID) {
-        Card card;
+        Card card = null;
         if (typeOfCard.toLowerCase().equals("mastercard")) {
             card = getMasterCardByID(cardID);
         } else if (typeOfCard.toLowerCase().equals("visa")) {

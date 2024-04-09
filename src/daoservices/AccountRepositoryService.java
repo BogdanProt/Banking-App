@@ -76,7 +76,7 @@ public class AccountRepositoryService {
     }
 
     public Account getAccountByType(String typeOfAccount, String IBAN) {
-        Account account;
+        Account account = null;
         if (typeOfAccount.toLowerCase().equals("account")) {
             account = getAccountByIBAN(IBAN);
         } else if (typeOfAccount.toLowerCase().equals("savingsaccount")) {
