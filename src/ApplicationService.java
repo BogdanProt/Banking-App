@@ -35,7 +35,7 @@ public class ApplicationService {
         } else if (userDatabaseService.getNumberOfUsers() == 1) {
             return userDatabaseService.getUserByID(0);
         } else {
-            System.out.println("User id: [0-\"+(userDatabaseService.getNumberOfUsers - 1)+\"]:");
+            System.out.println("User id: [0-" + userDatabaseService.getNumberOfUsers() + "]:");
             int id = Integer.parseInt(scanner.nextLine());
             return userDatabaseService.getUserByID(id);
         }

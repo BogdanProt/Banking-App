@@ -20,8 +20,7 @@ public class Application {
         ApplicationService applicationService = new ApplicationService();
 
         while (!quit) {
-            printCommands();
-
+            System.out.println("Insert command: (help - to see available commands)");
             String command = scanner.nextLine().toLowerCase();
 
             try {
@@ -30,7 +29,7 @@ public class Application {
                     case "create_user_account" -> applicationService.createUserAccount(scanner);
                     case "create_user_savingsaccunt" -> applicationService.createUserSavingsAccount(scanner);
                     case "create_user_card" -> applicationService.createUserCard(scanner);
-                    case "print_user" -> applicationService.getUserAccount(scanner);
+                    case "print_user" -> applicationService.printUser(scanner);
                     case "print_user_balance" -> applicationService.printUserBalance(scanner);
                     case "print_user_accounts" -> applicationService.printUserAccounts(scanner);
                     case "deposit_into_account" -> applicationService.depositIntoAccount(scanner);
