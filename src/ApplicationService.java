@@ -172,6 +172,23 @@ public class ApplicationService {
 
         System.out.println(account);
     }
-    
+
+    public void getUserTransactions(Scanner scanner) throws Exception {
+        var user = getUserFromInput(scanner);
+        System.out.println("Show all transactions? (yes/no)");
+        String answer = scanner.nextLine();
+        switch (answer) {
+            case "yes":
+                System.out.println(user.filterTransactions(accountDatabaseService.getAllAccounts(), transactionDatabaseService.getAllTransactions()));
+                break;
+            case "no":
+                System.out.println("Year of transactions: ");
+                int year = scanner.nextInt();
+                System.out.println(user.filterTransactionsByYear(accountDatabaseService.getAllAccounts(), transactionDatabaseService.getAllTransactions(), year));
+                break;
+            default:
+                throw new Exception("Incorrect command!");
+        }
+    }
 
 }

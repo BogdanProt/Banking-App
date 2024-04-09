@@ -7,6 +7,7 @@ import model.user.*;
 import utils.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class TransactionRepositoryService {
 
@@ -48,4 +49,11 @@ public class TransactionRepositoryService {
         System.out.println("Removed: " + transaction);
     }
 
+    public List<Transaction> getAllTransactions() {
+        if (!transactionDAO.getAllTransactions().isEmpty())
+            return transactionDAO.getAllTransactions();
+        else
+            System.out.println("No transactions registered!");
+        return null;
+    }
 }

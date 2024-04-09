@@ -57,6 +57,21 @@ public class User {
         return accounts;
 
     }
+    public List<Transaction> filterTransactions(List<Account> allAccounts, List<Transaction> allTransactions){
+        var transactions = new ArrayList<Transaction>();
+        var accounts = this.filterAccounts(allAccounts);
+        for(var account: accounts)
+            transactions.addAll(account.getTransactionsPerUser(allTransactions));
+        return transactions;
+    }
+
+    public List<Transaction> filterTransactionsByYear(List<Account> allAccounts, List<Transaction> allTransactions, int year){
+        var transactions = new ArrayList<Transaction>();
+        var accounts = filterAccounts(allAccounts);
+        for(var account: accounts)
+            transactions.addAll(account.getTransactionsPerUserByYear(allTransactions, year));
+        return transactions;
+    }
 
 
     // Setters

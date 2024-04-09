@@ -28,4 +28,6 @@ public class TransactionDAO {
     public void delete(Transaction trans) {
         transactions.remove(trans);
     }
+
+    public List<Transaction> getAllTransactions() { return transactions; }
 }
