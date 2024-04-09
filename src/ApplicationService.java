@@ -14,7 +14,6 @@ public class ApplicationService {
     private UserRepositoryService userDatabaseService;
 
     private final AccountSeparation accountSeparation = new AccountSeparation();
-    private final CardSeparation cardSeparation = new CardSeparation();
     private final UserSeparation userSeparation = new UserSeparation();
     private final Map<String, Account> accountsMap = new HashMap<>();
 
