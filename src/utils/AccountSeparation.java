@@ -2,7 +2,7 @@ package utils;
 import model.account.*;
 
 public class AccountSeparation {
-    private static int uniqueID = 0;
+    private static int uniqueID;
 
     public static void addToUniqueID(int cnt) {
         uniqueID += cnt;

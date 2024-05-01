@@ -1,7 +1,7 @@
 CREATE TABLE `Banking`.`Account` (
     `IBAN` VARCHAR(45) NOT NULL,
     `swift` VARCHAR(45) NULL,
-    `balance` FLOAT NULL,
+    `balance` DOUBLE NULL,
     `name` VARCHAR(45) NULL,
     `userID` INT NOT NULL,
     PRIMARY KEY (`IBAN`)

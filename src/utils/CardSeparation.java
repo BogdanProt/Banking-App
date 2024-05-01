@@ -4,7 +4,7 @@ import model.card.MasterCard;
 import model.card.Visa;
 
 public class CardSeparation {
-    private static int uniqueID = 0;
+    private static int uniqueID;
 
     public Card addCard(String IBAN, String name) {
         return new Card(uniqueID++, IBAN, name);

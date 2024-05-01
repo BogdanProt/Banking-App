@@ -2,6 +2,8 @@ package model.account;
 
 import model.card.*;
 import utils.CardSeparation;
+
+import java.sql.*;
 import java.util.*;
 
 public class Account implements Comparator<Transaction>{
@@ -27,6 +29,14 @@ public class Account implements Comparator<Transaction>{
         this.balance = 0;
         this.name = name;
         this.userID = userID;
+    }
+
+    public Account(ResultSet in) throws SQLException {
+        this.IBAN = in.getString("IBAN");
+        this.swift = in.getString("swift");
+        this.balance = in.getDouble("balance");
+        this.name = in.getString("name");
+        this.userID = in.getInt("userID");
     }
 
     public void setBalance(double balance) { this.balance = balance; }

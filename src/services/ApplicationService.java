@@ -1,3 +1,4 @@
+package services;
 
 import dao.*;
 import daoservices.*;
@@ -5,6 +6,8 @@ import model.card.*;
 import model.account.*;
 import model.user.*;
 import utils.*;
+
+import java.sql.SQLException;
 import java.util.*;
 import java.text.ParseException;
 
@@ -17,7 +20,7 @@ public class ApplicationService {
     private final UserSeparation userSeparation = new UserSeparation();
     private final Map<String, Account> accountsMap = new HashMap<>();
 
-    public ApplicationService() {
+    public ApplicationService() throws SQLException {
         this.accountDatabaseService = new AccountRepositoryService();
         this.transactionDatabaseService = new TransactionRepositoryService();
         this.userDatabaseService = new UserRepositoryService();
@@ -46,7 +49,7 @@ public class ApplicationService {
         System.out.println(user);
     }
 
-    public void createUser(Scanner scanner) throws ParseException {
+    public void createUser(Scanner scanner) throws SQLException, ParseException {
         User newUser = userSeparation.createUser(scanner);
         userDatabaseService.addUser(newUser);
         Account newAccount = accountSeparation.createAccount(newUser.getFirstName() + " " + newUser.getLastName(), newUser.getUserID());

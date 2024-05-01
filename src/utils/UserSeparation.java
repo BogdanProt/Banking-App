@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.text.ParseException;
 
 public class UserSeparation {
-    private static int uniqueID = 0;
+    private static int uniqueID;
 
     public static void incrementUniqueId(int cnt) {
         uniqueID += cnt;

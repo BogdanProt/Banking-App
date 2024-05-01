@@ -1,5 +1,7 @@
 package model.account;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -27,6 +29,14 @@ public class SavingsAccount extends Account{
         this.endDate = endDate;
         this.interestRate = interestRate;
     }
+
+    public SavingsAccount(ResultSet in) throws SQLException {
+        super(in);
+        this.startDate = in.getDate("startDate");
+        this.endDate = in.getDate("endDate");
+        this.interestRate = in.getInt("interest");
+    }
+
 
     public Date getStartDate() { return startDate; }
 

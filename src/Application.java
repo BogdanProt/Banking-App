@@ -1,4 +1,7 @@
 
+import services.ApplicationService;
+
+import java.sql.SQLException;
 import java.util.*;
 
 public class Application {
@@ -12,7 +15,7 @@ public class Application {
         System.out.println();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
         Scanner scanner = new Scanner(System.in);
         boolean quit = false;

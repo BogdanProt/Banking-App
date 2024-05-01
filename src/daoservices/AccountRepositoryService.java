@@ -6,41 +6,42 @@ import model.account.*;
 import model.user.*;
 import utils.*;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class AccountRepositoryService {
 
-    private AccountDAO accountDAO;
-    private SavingsAccountDAO savingsAccountDAO;
+    private AccountDAO accountDAO = AccountDAO.getInstance();
+    private SavingsAccountDAO savingsAccountDAO = SavingsAccountDAO.getInstance();
 
-    public AccountRepositoryService() {
-        this.accountDAO = new AccountDAO();
-        this.savingsAccountDAO = new SavingsAccountDAO();
-    }
+    public AccountRepositoryService() throws SQLException {}
 
-    public Account getAccountByIBAN(String IBAN) {
-        Account account = accountDAO.read(IBAN);
-        if (account != null) {
-            System.out.println(account);
+
+    public List<Account> getAccounts() throws SQLException{
+        List<Account> accounts = accountDAO.read();
+        if (!accounts.isEmpty()) {
+            for (Account account : accounts)
+                System.out.println(account.getName() + " : " + account.getIBAN());
         } else {
-            System.out.println("No account having this ID!");
+            System.out.println("No accounts registered!");
         }
 
-        return account;
+        return accounts;
     }
 
-    public SavingsAccount getSavingsAccountByIBAN(String IBAN) {
-        SavingsAccount savingsAccount = savingsAccountDAO.read(IBAN);
-        if (savingsAccount != null) {
-            System.out.println(savingsAccount);
+    public List<SavingsAccount> getSavingsAccounts() throws SQLException{
+        List<SavingsAccount> savingsAccounts = savingsAccountDAO.read();
+        if (!savingsAccounts.isEmpty()) {
+            for (SavingsAccount account : savingsAccounts)
+                System.out.println(account.getName() + " : " + account.getIBAN());
         } else {
-            System.out.println("No savings account having this ID!");
+            System.out.println("No savings accounts registered!");
         }
 
-        return savingsAccount;
+        return savingsAccounts;
     }
 
-    public void removeAccount(String typeOfAccount, String IBAN) {
+    public void removeAccount(String typeOfAccount, String IBAN) throws SQLException {
         Account account = getAccountByType(typeOfAccount, IBAN);
         if (account == null) return;
 
@@ -58,7 +59,7 @@ public class AccountRepositoryService {
         System.out.println("Removed: " + account);
     }
 
-    public void addAccount(Account account) {
+    public void addAccount(Account account) throws SQLException{
         if (account != null) {
             switch (account.getClass().getSimpleName()) {
                 case "Account":
@@ -73,37 +74,40 @@ public class AccountRepositoryService {
         }
 
         System.out.println("Added: " + account);
+
     }
 
-    public Account getAccountByType(String typeOfAccount, String IBAN) {
+    public Account getAccountByType(String typeOfAccount, String IBAN) throws SQLException{
         Account account = null;
-        if (typeOfAccount.toLowerCase().equals("account")) {
-            account = getAccountByIBAN(IBAN);
-        } else if (typeOfAccount.toLowerCase().equals("savingsaccount")) {
-            account = getAccountByIBAN(IBAN);
-        }
-        if (account == null) {
-            System.out.println("No account having IBAN: " + IBAN);
-            return null;
+        try {
+            if (typeOfAccount.toLowerCase().equals("account")) {
+                account = getAccountByIBAN(IBAN);
+            } else if (typeOfAccount.toLowerCase().equals("savingsaccount")) {
+                account = getSavingsAccountByIBAN(IBAN);
+            }
+            if (account == null) {
+                System.out.println("No account having IBAN: " + IBAN);
+                return null;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQLException " + e.getSQLState() + " " + e.getMessage());
         }
         return account;
     }
 
-    public List<Account> getAllAccounts() {
-        if (!accountDAO.getAccounts().isEmpty()) {
-            return accountDAO.getAccounts();
-        } else {
-            System.out.println("No accounts registered!");
-        }
+    public Account getAccountByIBAN(String IBAN) throws SQLException {
+        List<Account> accounts = getAccounts();
+        for (Account account : accounts)
+            if (account.getIBAN().equals(IBAN))
+                return account;
         return null;
     }
 
-    public List<SavingsAccount> getAllSavingsAccounts() {
-        if (!savingsAccountDAO.getSavingsAccounts().isEmpty()) {
-            return savingsAccountDAO.getSavingsAccounts();
-        } else {
-            System.out.println("No savings accounts registered!");
-        }
+    public SavingsAccount getSavingsAccountByIBAN(String IBAN) throws SQLException {
+        List<SavingsAccount> accounts = getSavingsAccounts();
+        for (SavingsAccount account : accounts)
+                if (account.getIBAN().equals(IBAN))
+                    return account;
         return null;
     }
 
