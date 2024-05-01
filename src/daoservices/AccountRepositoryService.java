@@ -111,4 +111,14 @@ public class AccountRepositoryService {
         return null;
     }
 
+    public void updateAccount(Account account) throws SQLException {
+        if (account != null) {
+            switch (account.getClass().getSimpleName()){
+                case "Account" -> accountDAO.update((Account) account);
+                case "SavingsAccount" -> savingsAccountDAO.update((SavingsAccount) account);
+                default -> throw new IllegalStateException("Unexpected value: " + account);
+            }
+        }
+    }
+
 }
