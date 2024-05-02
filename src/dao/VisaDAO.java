@@ -4,6 +4,7 @@ import model.card.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class VisaDAO {
     private static List<Visa> visaCards = new ArrayList<>();
 

@@ -1,5 +1,7 @@
 package model.card;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,6 +34,15 @@ public class Card {
         calendar.setTime(new Date());
         calendar.add(Calendar.YEAR, 4);
         this.expirationDate = calendar.getTime();
+    }
+
+    public Card(ResultSet in) throws SQLException {
+        this.cardID = in.getInt("cardID");
+        this.CVV = in.getInt("CVV");
+        this.cardNumber = in.getString("cardNumber");
+        this.name = in.getString("name");
+        this.IBAN = in.getString("IBAN");
+        this.expirationDate = in.getDate("expirationDate");
     }
 
     public int getCardID() { return cardID; }
