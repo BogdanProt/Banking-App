@@ -103,7 +103,7 @@ public class CardRepositoryService {
             switch (card) {
                 case MasterCard masterCard -> masterCardDAO.update(masterCard);
                 case Visa visa -> visaDAO.update(visa);
-                case default -> throw new IllegalStateException("Unexpected value: " + card)
+                default -> throw new IllegalStateException("Unexpected value: " + card);
             }
         }
     }
