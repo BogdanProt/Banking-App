@@ -1,5 +1,5 @@
 package dao;
-import model.card.*;
+import model.card.MasterCard;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
