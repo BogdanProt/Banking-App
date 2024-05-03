@@ -6,39 +6,58 @@ import model.account.*;
 import model.user.*;
 import utils.*;
 
+import java.sql.SQLException;
+import java.util.List;
+import java.util.ArrayList;
+
 public class CardRepositoryService {
 
-    private MasterCardDAO masterCardDAO;
-    private VisaDAO visaDAO;
+    private MasterCardDAO masterCardDAO = MasterCardDAO.getInstance();
+    private VisaDAO visaDAO = VisaDAO.getInstance();
 
-    public CardRepositoryService() {
-        this.masterCardDAO = new MasterCardDAO();
-        this.visaDAO = new VisaDAO();
+    public CardRepositoryService() throws SQLException {}
+
+    public List<MasterCard> getMasterCards() throws SQLException {
+        List<MasterCard> mastercards = masterCardDAO.read();
+        if (!mastercards.isEmpty())
+            for (MasterCard card : mastercards)
+                System.out.println(card.getName() + " : " + card.getCardID());
+        else
+            System.out.println("No cards registered!");
+
+        return mastercards;
     }
 
-    public MasterCard getMasterCardByID(int cardID) {
-        MasterCard masterCard = masterCardDAO.read(cardID);
-        if (masterCard != null) {
-            System.out.println(masterCard);
-        } else {
-            System.out.println("No mastercard having this ID!");
-        }
+    public List<Visa> getVisaCards() throws SQLException {
+        List<Visa> visacards = visaDAO.read();
+        if (!visacards.isEmpty())
+            for (Visa card : visacards)
+                System.out.println(card.getName() + " : " + card.getCardID());
+        else
+            System.out.println("No cards registered!");
 
-        return masterCard;
+        return visacards;
     }
 
-    public Visa getVisaByID(int cardID) {
-        Visa visa = visaDAO.read(cardID);
-        if (visa != null) {
-            System.out.println(visa);
-        } else {
-            System.out.println("No visa having this ID!");
-        }
+    public MasterCard getMasterCardByID(int cardID) throws SQLException{
+        List<MasterCard> masterCards = getMasterCards();
+        for (MasterCard card : masterCards)
+            if (cardID == card.getCardID())
+                return card;
 
-        return visa;
+        return null;
     }
 
-    public void addCard(Card card) {
+    public Visa getVisaByID(int cardID) throws SQLException{
+        List<Visa> visaCards = visaDAO.read();
+        for (Visa card : visaCards)
+            if (cardID == card.getCardID())
+                return card;
+
+        return null;
+    }
+
+    public void addCard(Card card) throws SQLException{
         if (card != null) {
             switch (card) {
                 case MasterCard masterCard -> masterCardDAO.create(masterCard);
@@ -50,7 +69,7 @@ public class CardRepositoryService {
         System.out.println("Added " + card);
     }
 
-    public void removeCard(String typeOfCard, int cardID) {
+    public void removeCard(String typeOfCard, int cardID) throws SQLException{
         Card card = getCard(typeOfCard, cardID);
         if (card == null) return;
 
@@ -63,7 +82,7 @@ public class CardRepositoryService {
         System.out.println("Removed " + card);
     }
 
-    public Card getCard(String typeOfCard, int cardID) {
+    public Card getCard(String typeOfCard, int cardID) throws SQLException{
         Card card = null;
         if (typeOfCard.toLowerCase().equals("mastercard")) {
             card = getMasterCardByID(cardID);
@@ -72,10 +91,20 @@ public class CardRepositoryService {
         }
 
         if (card == null) {
-            System.out.println("No card having id " + cardID);
+            System.out.println("No card of given type having id " + cardID);
             return null;
         }
 
         return card;
+    }
+
+    public void updateCard(Card card) throws SQLException {
+        if (card != null) {
+            switch (card) {
+                case MasterCard masterCard -> masterCardDAO.update(masterCard);
+                case Visa visa -> visaDAO.update(visa);
+                case default -> throw new IllegalStateException("Unexpected value: " + card)
+            }
+        }
     }
 }
