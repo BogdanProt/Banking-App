@@ -1,5 +1,7 @@
 package model.account;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -29,6 +31,14 @@ public class Transaction {
         this.description = description;
         this.amount = amount;
         this.issuedDate = issuedDate;
+    }
+
+    public Transaction(ResultSet in) throws SQLException {
+        this.fromIBAN = in.getString("fromIBAN");
+        this.toIBAN = in.getString("toIBAN");
+        this.description = in.getString("description");
+        this.amount = in.getDouble("amount");
+        this.issuedDate = in.getDate("issuedDate");
     }
 
     @Override
