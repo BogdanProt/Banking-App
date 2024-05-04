@@ -53,7 +53,7 @@ public class UserRepositoryService {
         if (newUser != null) {
             userDAO.update(newUser);
         } else {
-            throw new IllegalStateException("Unexpected value: " + newUser)
+            throw new IllegalStateException("Unexpected value: " + newUser);
         }
     }
 
