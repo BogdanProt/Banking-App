@@ -53,7 +53,6 @@ public class SavingsAccount extends Account{
                 ", amount=" + balance +
                 ", name='" + name + '\'' +
                 ", customerId=" + userID +
-                ", cards=" + cards +
                 ", startDate=" + (new SimpleDateFormat("yyyy-MM-dd")).format(startDate) +
                 ", endDate=" + (new SimpleDateFormat("yyyy-MM-dd")).format(endDate) +
                 ", interest=" + interestRate +

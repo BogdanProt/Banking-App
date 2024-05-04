@@ -20,14 +20,7 @@ public class Address {
         this.postalCode = postalCode;
     }
 
-    public Address(Scanner in) {
-        this.read(in);
-    }
-
-    public Address(ResultSet in) throws SQLException {
-        this.read(in);
-    }
-    public void read (Scanner scanner) {
+    public Address(Scanner scanner) {
         System.out.println("Country: ");
         country = scanner.nextLine().toLowerCase();
         System.out.println("County: ");
@@ -40,14 +33,13 @@ public class Address {
         postalCode = scanner.nextInt();
     }
 
-    public void read(ResultSet in) throws SQLException {
+    public Address(ResultSet in) throws SQLException {
         this.country = in.getString("country");
         this.county = in.getString("county");
         this.city = in.getString("city");
         this.street = in.getString("street");
         this.postalCode = in.getInt("postalCode");
     }
-
 
     public String getCountry() { return country; }
 

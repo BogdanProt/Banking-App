@@ -27,6 +27,8 @@ public class ApplicationService {
         this.transactionDatabaseService = new TransactionRepositoryService();
         this.userDatabaseService = new UserRepositoryService();
         this.cardDatabaseService = new CardRepositoryService();
+
+        this.mapAccounts();
     }
 
     public void mapAccounts() throws SQLException{
@@ -62,10 +64,10 @@ public class ApplicationService {
 
 
     private Account getAccountFromInput(Scanner scanner, User user) throws Exception {
-        List<Account> usersAccounts = user.filterAccounts(accountDatabaseService.getAllAccounts());
+        List<Account> usersAccounts = filterAccounts(user, accountDatabaseService.getAccounts());
         System.out.println("User accounts: " + usersAccounts);
         System.out.println("Select IBAN: ");
-        var IBAN = scanner.nextLine();
+        String IBAN = scanner.nextLine();
         if (!accountsMap.containsKey(IBAN)) {
             throw new Exception("Invalid IBAN!");
         }
@@ -76,21 +78,18 @@ public class ApplicationService {
         return account;
     }
 
-    //DONE
     public void printUserBalance(Scanner scanner) throws Exception {
-        var user = getUserFromInput(scanner);
-        var userAccounts = user.filterAccounts(accountDatabaseService.getAllAccounts());
+        var userAccounts = filterAccounts(scanner, accountDatabaseService.getAccounts());
         double totalBalance = 0;
         for (var acc : userAccounts) {
             totalBalance += acc.getBalance();
         }
-        System.out.println("The total balance of " + user.getFirstName() + " " + user.getLastName() + " is " + totalBalance);
+        System.out.println("The total balance of the given user is " + totalBalance);
     }
 
     //DONE
     public void printUserAccounts(Scanner scanner) throws Exception {
-        var user = getUserFromInput(scanner);
-        List<Account> userAccounts = user.filterAccounts(accountDatabaseService.getAllAccounts());
+        List<Account> userAccounts = filterAccounts(scanner, accountDatabaseService.getAccounts());
         System.out.println(userAccounts.toString());
     }
 
@@ -113,20 +112,35 @@ public class ApplicationService {
         System.out.println("Savings account created");
     }
 
+    //TO DO
+
     public void createUserCard(Scanner scanner) throws Exception {
-        var user = getUserFromInput(scanner);
-        var account = getAccountFromInput(scanner, user);
-        System.out.println("Name: ");
-        String name = scanner.nextLine();
-        account.addCard(name);
+        User user = getUserFromInput(scanner);
+        Account account = getAccountFromInput(scanner, user);
+        addCard(scanner, account);
+    }
+
+    public void addCard(Scanner scanner, Account account) throws SQLException{
+        System.out.println("Select the type of card: MasterCard/Visa");
+        String selection = scanner.nextLine();
+        if (selection.toLowerCase().equals("mastercard")) {
+            Card card = cardSeparation.createMasterCard(account.getIBAN(), account.getName());
+            cardDatabaseService.addCard(card);
+            System.out.println("Card created");
+        } else if (selection.toLowerCase().equals("visa")) {
+            Card card = cardSeparation.createVisaCard(account.getIBAN(), account.getName());
+            cardDatabaseService.addCard(card);
+            System.out.println("Card created");
+        } else {
+            System.out.println("Invalid card type!");
+        }
     }
 
     public void depositIntoAccount(Scanner scanner) throws Exception {
-        var user = getUserFromInput(scanner);
+        List<Account> userAccounts = filterAccounts(scanner, accountDatabaseService.getAccounts());
         System.out.println("How much do you want to deposit?");
         double balance = Double.parseDouble(scanner.nextLine());
-        var userAccounts = user.filterAccounts(accountDatabaseService.getAllAccounts());
-        userAccounts.get(0).setBalance(balance);
+        userAccounts.get(0).setBalance(userAccounts.get(0).getBalance() + balance);
         System.out.println("Deposit made successfully!");
     }
 
@@ -165,7 +179,7 @@ public class ApplicationService {
         var user = getUserFromInput(scanner);
         var account = getAccountFromInput(scanner, user);
 
-        if (user.filterAccounts(accountDatabaseService.getAllAccounts()).isEmpty())
+        if (filterAccounts(user, accountDatabaseService.getAccounts()).isEmpty())
             throw new Exception("No account associated with the user.");
         accountsMap.remove(account.getIBAN());
         System.out.println("Enter the type of account you want to close(account/savingsaccount): ");
@@ -174,29 +188,46 @@ public class ApplicationService {
         System.out.println("Account closed successfully!");
     }
 
-    public void getUserAccount(Scanner scanner) throws Exception {
-        User user = getUserFromInput(scanner);
-        Account account = getAccountFromInput(scanner, user);
-
-        System.out.println(account);
-    }
 
     public void getUserTransactions(Scanner scanner) throws Exception {
         var user = getUserFromInput(scanner);
-        System.out.println("Show all transactions? (yes/no)");
-        String answer = scanner.nextLine();
-        switch (answer) {
-            case "yes":
-                System.out.println(user.filterTransactions(accountDatabaseService.getAllAccounts(), transactionDatabaseService.getAllTransactions()));
-                break;
-            case "no":
-                System.out.println("Year of transactions: ");
-                int year = scanner.nextInt();
-                System.out.println(user.filterTransactionsByYear(accountDatabaseService.getAllAccounts(), transactionDatabaseService.getAllTransactions(), year));
-                break;
-            default:
-                throw new Exception("Incorrect command!");
+        System.out.println(filterTransactions(user, accountDatabaseService.getAccounts(), transactionDatabaseService.getTransactions()));
+    }
+
+    public List<Transaction> filterTransactions(User user, List<Account> allAccounts, List<Transaction> allTransactions) throws Exception {
+        var transactions = new ArrayList<Transaction>();
+        var accounts = filterAccounts(user, allAccounts);
+        for(var account: accounts)
+            transactions.addAll(getTransactionsPerAccount(account, allTransactions));
+        return transactions;
+    }
+
+    public List<Transaction> getTransactionsPerAccount(Account account, List<Transaction> allTransactions) {
+        List<Transaction> transactions = new ArrayList<>();
+
+        for (Transaction transaction : allTransactions) {
+            if (transaction.getFromIBAN().equals(account.getIBAN())) {
+                transactions.add(transaction);
+            }
         }
+        return transactions;
+    }
+
+    public List<Account> filterAccounts(User user, List<Account> allAccounts) throws Exception {
+        List<Account> filteredAccounts = new ArrayList<>();
+        for (Account acc : allAccounts)
+            if (acc.getUserID() == user.getUserID())
+                filteredAccounts.add(acc);
+        return filteredAccounts;
+    }
+
+    public List<Account> filterAccounts(Scanner scanner, List<Account> allAccounts) throws Exception {
+        User user = getUserFromInput(scanner);
+        List<Account> filteredAccounts = new ArrayList<>();
+        for (Account acc : allAccounts)
+            if (acc.getUserID() == user.getUserID())
+                filteredAccounts.add(acc);
+        return filteredAccounts;
     }
 
 }
