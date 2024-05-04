@@ -4,6 +4,8 @@ import model.user.*;
 import java.util.List;
 import java.util.ArrayList;
 import daoservices.DatabaseConnection;
+import utils.UserSeparation;
+
 import java.sql.*;
 
 public class UserDAO implements DaoInterface<User>{

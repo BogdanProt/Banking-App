@@ -30,7 +30,6 @@ public class ApplicationService {
 
         this.mapAccounts();
     }
-
     public void mapAccounts() throws SQLException{
         for (var account : accountDatabaseService.getAccounts()) {
             accountsMap.put(account.getIBAN(), account);
@@ -140,7 +139,8 @@ public class ApplicationService {
         List<Account> userAccounts = filterAccounts(scanner, accountDatabaseService.getAccounts());
         System.out.println("How much do you want to deposit?");
         double balance = Double.parseDouble(scanner.nextLine());
-        userAccounts.get(0).setBalance(userAccounts.get(0).getBalance() + balance);
+        userAccounts.get(0).setBalance(balance);
+        accountDatabaseService.updateAccount(userAccounts.get(0));
         System.out.println("Deposit made successfully!");
     }
 

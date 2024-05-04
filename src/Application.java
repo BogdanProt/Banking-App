@@ -21,7 +21,6 @@ public class Application {
         boolean quit = false;
 
         ApplicationService applicationService = new ApplicationService();
-
         while (!quit) {
             System.out.println("Insert command: (help - to see available commands)");
             String command = scanner.nextLine().toLowerCase();
