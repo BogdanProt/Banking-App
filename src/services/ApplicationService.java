@@ -15,24 +15,26 @@ public class ApplicationService {
     private AccountRepositoryService accountDatabaseService;
     private TransactionRepositoryService transactionDatabaseService;
     private UserRepositoryService userDatabaseService;
+    private CardRepositoryService cardDatabaseService;
 
     private final AccountSeparation accountSeparation = new AccountSeparation();
     private final UserSeparation userSeparation = new UserSeparation();
+    private final CardSeparation cardSeparation = new CardSeparation();
     private final Map<String, Account> accountsMap = new HashMap<>();
 
     public ApplicationService() throws SQLException {
         this.accountDatabaseService = new AccountRepositoryService();
         this.transactionDatabaseService = new TransactionRepositoryService();
         this.userDatabaseService = new UserRepositoryService();
+        this.cardDatabaseService = new CardRepositoryService();
     }
 
-    public void mapAccounts() {
-        for (var account : accountDatabaseService.getAllAccounts()) {
+    public void mapAccounts() throws SQLException{
+        for (var account : accountDatabaseService.getAccounts()) {
             accountsMap.put(account.getIBAN(), account);
         }
     }
 
-    //DONE
     private User getUserFromInput(Scanner scanner) throws Exception{
         if (userDatabaseService.getNumberOfUsers() == 0) {
             throw new Exception("No users have beed added!");
@@ -45,13 +47,11 @@ public class ApplicationService {
         }
     }
 
-    //DONE
     public void printUser(Scanner scanner) throws Exception{
         var user = getUserFromInput(scanner);
         System.out.println(user);
     }
-
-    //DONE
+    
     public void createUser(Scanner scanner) throws SQLException, ParseException {
         User newUser = userSeparation.createUser(scanner);
         userDatabaseService.addUser(newUser);

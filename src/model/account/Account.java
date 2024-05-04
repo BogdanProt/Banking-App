@@ -54,11 +54,7 @@ public class Account implements Comparator<Transaction>{
     public List<Card> getCards() { return cards; }
 
 
-    public int compare(Transaction transaction1, Transaction transaction2){
-        return transaction1.getIssuedDate().compareTo(transaction2.getIssuedDate());
-    }
-
-    public List<Transaction> getTransactionsPerUser(List<Transaction> allTransactions) {
+    public List<Transaction> getTransactionsPerAccount(List<Transaction> allTransactions) {
         List<Transaction> transactions = new ArrayList<>();
 
         for (Transaction transaction : allTransactions) {
@@ -69,7 +65,7 @@ public class Account implements Comparator<Transaction>{
 
         return transactions;
     }
-public List<Transaction> getTransactionsPerUserByYear(List<Transaction> allTransactions, int year) {
+    public List<Transaction> getTransactionsPerAccountByYear(List<Transaction> allTransactions, int year) {
         List<Transaction> transactions = new ArrayList<>();
 
         for(Transaction transaction : allTransactions) {
@@ -79,8 +75,7 @@ public List<Transaction> getTransactionsPerUserByYear(List<Transaction> allTrans
         }
 
         return transactions;
-}
-
+    }
 
     public void addCard(String name) {
         Card card = cardSeparation.addCard(this.IBAN, name);

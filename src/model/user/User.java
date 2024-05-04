@@ -66,6 +66,15 @@ public class User {
         this.address = new Address(in);
     }
 
+    public List<Account> filterAccounts(List<Account> allAccounts) {
+        var accounts = new ArrayList<Account>();
+        for (var account : allAccounts) {
+            if (account.getUserID() == this.userID) {
+                accounts.add(account);
+            }
+        }
+        return accounts;
+    }
     public List<Transaction> filterTransactions(List<Account> allAccounts, List<Transaction> allTransactions){
         var transactions = new ArrayList<Transaction>();
         var accounts = this.filterAccounts(allAccounts);
