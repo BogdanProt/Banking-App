@@ -32,25 +32,6 @@ public class User {
 
     public User(int userID, Scanner scanner) throws ParseException {
         this.userID = userID;
-        this.read(scanner);
-    }
-
-    public User(int userID, ResultSet in) throws SQLException {
-        this.userID = userID;
-        this.read(in);
-    }
-
-    public User(ResultSet in) throws SQLException {
-        this.userID = in.getInt("userID");
-        this.firstName = in.getString("firstName");
-        this.lastName = in.getString("lastName");
-        this.CNP = in.getString("CNP");
-        this.emailAddress = in.getString("emailAddress");
-        this.phoneNumber = in.getString("phoneNumber");
-        this.address = new Address(in);
-    }
-
-    public void read(Scanner scanner) throws ParseException{
         System.out.println("First name: ");
         this.firstName = scanner.nextLine();
         System.out.println("Last name: ");
@@ -65,7 +46,8 @@ public class User {
         this.address = new Address(scanner);
     }
 
-    public void read(ResultSet in) throws SQLException {
+    public User(int userID, ResultSet in) throws SQLException {
+        this.userID = userID;
         this.firstName = in.getString("firstName");
         this.lastName = in.getString("lastName");
         this.CNP = in.getString("CNP");
@@ -74,16 +56,16 @@ public class User {
         this.address = new Address(in);
     }
 
-    public List<Account> filterAccounts(List<Account> allAccounts) {
-        var accounts = new ArrayList<Account>();
-        for (var account : allAccounts) {
-            if (account.getUserID() == this.userID) {
-                accounts.add(account);
-            }
-        }
-        return accounts;
-
+    public User(ResultSet in) throws SQLException {
+        this.userID = in.getInt("userID");
+        this.firstName = in.getString("firstName");
+        this.lastName = in.getString("lastName");
+        this.CNP = in.getString("CNP");
+        this.emailAddress = in.getString("emailAddress");
+        this.phoneNumber = in.getString("phoneNumber");
+        this.address = new Address(in);
     }
+
     public List<Transaction> filterTransactions(List<Account> allAccounts, List<Transaction> allTransactions){
         var transactions = new ArrayList<Transaction>();
         var accounts = this.filterAccounts(allAccounts);

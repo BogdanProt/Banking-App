@@ -32,6 +32,7 @@ public class ApplicationService {
         }
     }
 
+    //DONE
     private User getUserFromInput(Scanner scanner) throws Exception{
         if (userDatabaseService.getNumberOfUsers() == 0) {
             throw new Exception("No users have beed added!");
@@ -44,11 +45,13 @@ public class ApplicationService {
         }
     }
 
+    //DONE
     public void printUser(Scanner scanner) throws Exception{
         var user = getUserFromInput(scanner);
         System.out.println(user);
     }
 
+    //DONE
     public void createUser(Scanner scanner) throws SQLException, ParseException {
         User newUser = userSeparation.createUser(scanner);
         userDatabaseService.addUser(newUser);
@@ -56,6 +59,7 @@ public class ApplicationService {
         accountDatabaseService.addAccount(newAccount);
         System.out.println("User created");
     }
+
 
     private Account getAccountFromInput(Scanner scanner, User user) throws Exception {
         List<Account> usersAccounts = user.filterAccounts(accountDatabaseService.getAllAccounts());
@@ -72,6 +76,7 @@ public class ApplicationService {
         return account;
     }
 
+    //DONE
     public void printUserBalance(Scanner scanner) throws Exception {
         var user = getUserFromInput(scanner);
         var userAccounts = user.filterAccounts(accountDatabaseService.getAllAccounts());
@@ -82,6 +87,7 @@ public class ApplicationService {
         System.out.println("The total balance of " + user.getFirstName() + " " + user.getLastName() + " is " + totalBalance);
     }
 
+    //DONE
     public void printUserAccounts(Scanner scanner) throws Exception {
         var user = getUserFromInput(scanner);
         List<Account> userAccounts = user.filterAccounts(accountDatabaseService.getAllAccounts());
