@@ -1,5 +1,7 @@
 package model.user;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -22,6 +24,9 @@ public class Address {
         this.read(in);
     }
 
+    public Address(ResultSet in) throws SQLException {
+        this.read(in);
+    }
     public void read (Scanner scanner) {
         System.out.println("Country: ");
         country = scanner.nextLine().toLowerCase();
@@ -34,6 +39,15 @@ public class Address {
         System.out.println("Postal code: ");
         postalCode = scanner.nextInt();
     }
+
+    public void read(ResultSet in) throws SQLException {
+        this.country = in.getString("country");
+        this.county = in.getString("county");
+        this.city = in.getString("city");
+        this.street = in.getString("street");
+        this.postalCode = in.getInt("postalCode");
+    }
+
 
     public String getCountry() { return country; }
 

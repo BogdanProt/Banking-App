@@ -3,6 +3,9 @@ package model.user;
 import utils.*;
 import model.card.*;
 import model.account.*;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,6 +35,21 @@ public class User {
         this.read(scanner);
     }
 
+    public User(int userID, ResultSet in) throws SQLException {
+        this.userID = userID;
+        this.read(in);
+    }
+
+    public User(ResultSet in) throws SQLException {
+        this.userID = in.getInt("userID");
+        this.firstName = in.getString("firstName");
+        this.lastName = in.getString("lastName");
+        this.CNP = in.getString("CNP");
+        this.emailAddress = in.getString("emailAddress");
+        this.phoneNumber = in.getString("phoneNumber");
+        this.address = new Address(in);
+    }
+
     public void read(Scanner scanner) throws ParseException{
         System.out.println("First name: ");
         this.firstName = scanner.nextLine();
@@ -45,6 +63,15 @@ public class User {
         this.phoneNumber = scanner.nextLine();
         System.out.println("Address: ");
         this.address = new Address(scanner);
+    }
+
+    public void read(ResultSet in) throws SQLException {
+        this.firstName = in.getString("firstName");
+        this.lastName = in.getString("lastName");
+        this.CNP = in.getString("CNP");
+        this.emailAddress = in.getString("emailAddress");
+        this.phoneNumber = in.getString("phoneNumber");
+        this.address = new Address(in);
     }
 
     public List<Account> filterAccounts(List<Account> allAccounts) {

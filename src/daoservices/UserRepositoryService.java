@@ -6,13 +6,13 @@ import model.account.*;
 import model.user.*;
 import utils.*;
 
+import java.sql.SQLException;
+
 public class UserRepositoryService {
 
-    private UserDAO userDAO;
+    private UserDAO userDAO = UserDAO.getInstance();
 
-    public UserRepositoryService() {
-        this.userDAO = new UserDAO();
-    }
+    public UserRepositoryService() throws SQLException {}
 
     public User getUserByID(int userID) {
         User user = userDAO.read(userID);
