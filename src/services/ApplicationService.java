@@ -42,7 +42,8 @@ public class ApplicationService {
         } else if (userDatabaseService.getNumberOfUsers() == 1) {
             return userDatabaseService.getUserByID(0);
         } else {
-            System.out.println("User id: [0-" + userDatabaseService.getNumberOfUsers() + "]:");
+            int noUsers = userDatabaseService.getNumberOfUsers() - 1;
+            System.out.println("User id: [0-" + noUsers + "]:");
             int id = Integer.parseInt(scanner.nextLine());
             return userDatabaseService.getUserByID(id);
         }
@@ -139,7 +140,7 @@ public class ApplicationService {
         List<Account> userAccounts = filterAccounts(scanner, accountDatabaseService.getAccounts());
         System.out.println("How much do you want to deposit?");
         double balance = Double.parseDouble(scanner.nextLine());
-        userAccounts.get(0).setBalance(balance);
+        userAccounts.get(0).setBalance(userAccounts.get(0).getBalance() + balance);
         accountDatabaseService.updateAccount(userAccounts.get(0));
         System.out.println("Deposit made successfully!");
     }
@@ -169,8 +170,16 @@ public class ApplicationService {
         if (fromIBAN.equals(toIBAN))
             throw new Exception("Cannot make deposits to the same account.");
 
+        fromAccount.setBalance(fromAccount.getBalance() - amount);
+        toAccount.setBalance(toAccount.getBalance() + amount);
+
         Transaction newTransaction = new Transaction(fromIBAN, toIBAN, description, amount);
         transactionDatabaseService.addTransaction(newTransaction);
+
+        if(accountDatabaseService != null) {
+            accountDatabaseService.updateAccount(fromAccount);
+            accountDatabaseService.updateAccount(toAccount);
+        }
 
         System.out.println("Transaction finished!");
     }
