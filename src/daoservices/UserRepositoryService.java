@@ -7,6 +7,7 @@ import model.user.*;
 import utils.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserRepositoryService {
 
@@ -14,19 +15,21 @@ public class UserRepositoryService {
 
     public UserRepositoryService() throws SQLException {}
 
-    public User getUserByID(int userID) {
-        User user = userDAO.read(userID);
+    public User getUserByID(int userID) throws SQLException{
+        List<User> users = userDAO.read();
 
-        if (user != null) {
-            System.out.println(user);
-        } else {
-            System.out.println("No user having this ID!");
+        if(!users.isEmpty()) {
+            for (User user : users) {
+                if (user.getUserID() == userID)
+                    return user;
+            }
         }
 
-        return user;
+        System.out.println("No user having id " + userID);
+        return null;
     }
 
-    public void addUser(User user) {
+    public void addUser(User user) throws SQLException{
         if (user != null) {
             userDAO.create(user);
         } else {
@@ -36,7 +39,7 @@ public class UserRepositoryService {
         System.out.println("Added " + user);
     }
 
-    public void removeUser(User user) {
+    public void removeUser(User user) throws SQLException{
         if (user != null) {
             userDAO.delete(user);
         } else {
@@ -46,11 +49,22 @@ public class UserRepositoryService {
         System.out.println("Removed " + user);
     }
 
-    public int getNumberOfUsers() {
-        if (userDAO.getSize() < 1) {
-            return 0;
+    public void updateUser(User newUser) throws SQLException {
+        if (newUser != null) {
+            userDAO.update(newUser);
         } else {
-            return userDAO.getSize();
+            throw new IllegalStateException("Unexpected value: " + newUser)
+        }
+    }
+
+    public int getNumberOfUsers() throws SQLException{
+        List<User> users = userDAO.read();
+
+        if (!users.isEmpty()) {
+            return users.size();
+        } else {
+            System.out.println("No users registered!");
+            return 0;
         }
     }
 }
