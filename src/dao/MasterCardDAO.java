@@ -23,16 +23,24 @@ public class MasterCardDAO implements DaoInterface<MasterCard>{
 
     @Override
     public void create(MasterCard masterCard) throws SQLException {
-        String sql = "INSERT INTO Banking.MasterCard (cardID, CVV, cardNumber, name, IBAN, expirationDate) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Banking.MasterCard (CVV, cardNumber, name, IBAN, expirationDate) VALUES (?, ?, ?, ?, ?)";
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, masterCard.getCardID());
-            statement.setInt(2, masterCard.getCVV());
-            statement.setString(3, masterCard.getCardNumber());
-            statement.setString(4, masterCard.getName());
-            statement.setString(5, masterCard.getIBAN());
-            statement.setString(6, (new SimpleDateFormat("yyyy-MM-dd")).format(masterCard.getExpirationDate()));
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setInt(1, masterCard.getCVV());
+            statement.setString(2, masterCard.getCardNumber());
+            statement.setString(3, masterCard.getName());
+            statement.setString(4, masterCard.getIBAN());
+            statement.setString(5, (new SimpleDateFormat("yyyy-MM-dd")).format(masterCard.getExpirationDate()));
             statement.executeUpdate();
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    masterCard.setCardID(generatedKeys.getInt(1));
+                } else {
+                    throw new SQLException("Failed.");
+                }
+            }
+
         } catch (Exception e) {
             System.out.println(e.toString());
         }

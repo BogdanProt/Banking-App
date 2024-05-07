@@ -48,6 +48,7 @@ public class Account {
 
     public int getUserID() { return userID; }
 
+    public void setIBAN(String IBAN) { this.IBAN = IBAN; }
 
     @Override
     public String toString() {

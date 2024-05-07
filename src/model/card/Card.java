@@ -11,7 +11,7 @@ import java.util.Random;
 
 
 public class Card {
-    final private int cardID, CVV;
+    private int cardID, CVV;
     private String cardNumber;
     private String name;
     private String IBAN;
@@ -60,6 +60,7 @@ public class Card {
 
     public void setIBAN(String IBAN) { this.IBAN = IBAN; }
 
+    public void setCardID(int cardID) { this.cardID = cardID; }
 
     @Override
     public String toString() {

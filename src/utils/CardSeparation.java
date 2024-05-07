@@ -6,16 +6,18 @@ import model.card.Visa;
 public class CardSeparation {
     private static int uniqueID;
 
+    // could give uniqueID the last id value from the column + 1
+
     public Card addCard(String IBAN, String name) {
         return new Card(uniqueID++, IBAN, name);
     }
 
     public MasterCard createMasterCard(String IBAN, String name) {
-        return new MasterCard(uniqueID++, IBAN, name);
+        return new MasterCard(0, IBAN, name);
     }
 
     public Visa createVisaCard(String IBAN, String name) {
-        return new Visa(uniqueID++, IBAN, name);
+        return new Visa(0, IBAN, name);
     }
 
 }

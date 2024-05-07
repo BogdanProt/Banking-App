@@ -24,16 +24,23 @@ public class VisaDAO implements DaoInterface<Visa> {
 
     @Override
     public void create(Visa visa) throws SQLException {
-        String sql = "INSERT INTO Banking.Visa (cardID, CVV, cardNumber, name, IBAN, expirationDate) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Banking.Visa (CVV, cardNumber, name, IBAN, expirationDate) VALUES (?, ?, ?, ?, ?)";
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, visa.getCardID());
-            statement.setInt(2, visa.getCVV());
-            statement.setString(3, visa.getCardNumber());
-            statement.setString(4, visa.getName());
-            statement.setString(5, visa.getIBAN());
-            statement.setString(6, (new SimpleDateFormat("yyyy-MM-dd")).format(visa.getExpirationDate()));
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setInt(1, visa.getCVV());
+            statement.setString(2, visa.getCardNumber());
+            statement.setString(3, visa.getName());
+            statement.setString(4, visa.getIBAN());
+            statement.setString(5, (new SimpleDateFormat("yyyy-MM-dd")).format(visa.getExpirationDate()));
             statement.executeUpdate();
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    visa.setCardID(generatedKeys.getInt(1));
+                } else {
+                    throw new SQLException("Failed.");
+                }
+            }
         } catch (Exception e) {
             System.out.println(e.toString());
         }

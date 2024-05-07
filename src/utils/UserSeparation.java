@@ -15,11 +15,11 @@ public class UserSeparation {
     }
 
     public User createUser(Scanner scanner) throws ParseException {
-        return new User(uniqueID++, scanner);
+        return new User(0, scanner);
     }
 
     public User createUser(ResultSet in) throws SQLException {
-        return new User(uniqueID++, in);
+        return new User(in);
     }
 
 }

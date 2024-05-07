@@ -29,7 +29,7 @@ public class Application {
                 switch (command) {
                     case "create_user" -> applicationService.createUser(scanner);
                     case "create_user_account" -> applicationService.createUserAccount(scanner);
-                    case "create_user_savingsaccunt" -> applicationService.createUserSavingsAccount(scanner);
+                    case "create_user_savingsaccount" -> applicationService.createUserSavingsAccount(scanner);
                     case "create_user_card" -> applicationService.createUserCard(scanner);
                     case "print_user" -> applicationService.printUser(scanner);
                     case "print_user_balance" -> applicationService.printUserBalance(scanner);

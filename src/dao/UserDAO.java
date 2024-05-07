@@ -24,21 +24,28 @@ public class UserDAO implements DaoInterface<User>{
 
     @Override
     public void create(User user) throws SQLException {
-        String sql = "INSERT INTO Banking.User (userID, firstName, lastName, CNP, emailAddress, phoneNumber, country, county, city, street, postalCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Banking.User (firstName, lastName, CNP, emailAddress, phoneNumber, country, county, city, street, postalCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, user.getUserID());
-            statement.setString(2, user.getFirstName());
-            statement.setString(3, user.getLastName());
-            statement.setString(4, user.getCNP());
-            statement.setString(5, user.getEmailAddress());
-            statement.setString(6, user.getPhoneNumber());
-            statement.setString(7, user.getAddress().getCountry());
-            statement.setString(8, user.getAddress().getCounty());
-            statement.setString(9, user.getAddress().getCity());
-            statement.setString(10, user.getAddress().getStreet());
-            statement.setInt(11, user.getAddress().getPostalCode());
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, user.getFirstName());
+            statement.setString(2, user.getLastName());
+            statement.setString(3, user.getCNP());
+            statement.setString(4, user.getEmailAddress());
+            statement.setString(5, user.getPhoneNumber());
+            statement.setString(6, user.getAddress().getCountry());
+            statement.setString(7, user.getAddress().getCounty());
+            statement.setString(8, user.getAddress().getCity());
+            statement.setString(9, user.getAddress().getStreet());
+            statement.setInt(10, user.getAddress().getPostalCode());
             statement.executeUpdate();
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    user.setUserID(generatedKeys.getInt(1));
+                } else {
+                    throw new SQLException("Failed.");
+                }
+            }
         } catch (Exception e) {
             System.out.println(e.toString());
         }

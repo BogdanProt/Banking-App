@@ -40,10 +40,10 @@ public class ApplicationService {
         if (userDatabaseService.getNumberOfUsers() == 0) {
             throw new Exception("No users have beed added!");
         } else if (userDatabaseService.getNumberOfUsers() == 1) {
-            return userDatabaseService.getUserByID(0);
+            return userDatabaseService.getUserByID(1);
         } else {
-            int noUsers = userDatabaseService.getNumberOfUsers() - 1;
-            System.out.println("User id: [0-" + noUsers + "]:");
+            int noUsers = userDatabaseService.getNumberOfUsers();
+            System.out.println("User id: [1-" + noUsers + "]:");
             int id = Integer.parseInt(scanner.nextLine());
             return userDatabaseService.getUserByID(id);
         }
@@ -90,7 +90,11 @@ public class ApplicationService {
     //DONE
     public void printUserAccounts(Scanner scanner) throws Exception {
         List<Account> userAccounts = filterAccounts(scanner, accountDatabaseService.getAccounts());
+        System.out.println("Accounts: ");
         System.out.println(userAccounts.toString());
+        List<SavingsAccount> savings = filterSavingsAccounts(scanner, accountDatabaseService.getSavingsAccounts());
+        System.out.println("Saving accounts: ");
+        System.out.println(savings.toString());
     }
 
     public void createUserAccount(Scanner scanner) throws Exception {
@@ -111,8 +115,6 @@ public class ApplicationService {
         accountDatabaseService.addAccount(newSavingsAccount);
         System.out.println("Savings account created");
     }
-
-    //TO DO
 
     public void createUserCard(Scanner scanner) throws Exception {
         User user = getUserFromInput(scanner);
@@ -234,6 +236,15 @@ public class ApplicationService {
         User user = getUserFromInput(scanner);
         List<Account> filteredAccounts = new ArrayList<>();
         for (Account acc : allAccounts)
+            if (acc.getUserID() == user.getUserID())
+                filteredAccounts.add(acc);
+        return filteredAccounts;
+    }
+
+    public List<SavingsAccount> filterSavingsAccounts(Scanner scanner, List<SavingsAccount> allAccounts) throws Exception {
+        User user = getUserFromInput(scanner);
+        List<SavingsAccount> filteredAccounts = new ArrayList<>();
+        for (SavingsAccount acc : allAccounts)
             if (acc.getUserID() == user.getUserID())
                 filteredAccounts.add(acc);
         return filteredAccounts;

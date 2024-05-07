@@ -29,7 +29,7 @@ CREATE TABLE `Banking`.`Transaction` (
 );
 
 CREATE TABLE `Banking`.`User` (
-    `userID` INT NOT NULL,
+    `userID` INT NOT NULL AUTO_INCREMENT,
     `firstName` VARCHAR(45) NULL,
     `lastName` VARCHAR(45) NULL,
     `CNP` VARCHAR(45) NULL,
@@ -44,7 +44,7 @@ CREATE TABLE `Banking`.`User` (
 );
 
 CREATE TABLE `Banking`.`MasterCard` (
-    `cardID` INT NOT NULL,
+    `cardID` INT NOT NULL AUTO_INCREMENT,
     `CVV` INT NULL,
     `cardNumber` VARCHAR(45) NULL,
     `name` VARCHAR(45) NULL,
@@ -54,7 +54,7 @@ CREATE TABLE `Banking`.`MasterCard` (
 );
 
 CREATE TABLE `Banking`.`Visa` (
-    `cardID` INT NOT NULL,
+    `cardID` INT NOT NULL AUTO_INCREMENT,
     `CVV` INT NULL,
     `cardNumber` VARCHAR(45) NULL,
     `name` VARCHAR(45) NULL,
