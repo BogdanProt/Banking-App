@@ -15,33 +15,64 @@ public class Application {
         System.out.println();
     }
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, Exception{
 
         Scanner scanner = new Scanner(System.in);
         boolean quit = false;
 
         ApplicationService applicationService = new ApplicationService();
+        System.out.println("Insert command: (help - to see available commands)");
         while (!quit) {
-            System.out.println("Insert command: (help - to see available commands)");
             String command = scanner.nextLine().toLowerCase();
 
             try {
+
+
                 switch (command) {
-                    case "create_user" -> applicationService.createUser(scanner);
-                    case "create_user_account" -> applicationService.createUserAccount(scanner);
-                    case "create_user_savingsaccount" -> applicationService.createUserSavingsAccount(scanner);
-                    case "create_user_card" -> applicationService.createUserCard(scanner);
-                    case "print_user" -> applicationService.printUser(scanner);
-                    case "print_user_balance" -> applicationService.printUserBalance(scanner);
-                    case "print_user_accounts" -> applicationService.printUserAccounts(scanner);
-                    case "deposit_into_account" -> applicationService.depositIntoAccount(scanner);
-                    case "print_user_transactions" -> applicationService.getUserTransactions(scanner);
-                    case "make_transaction" -> applicationService.makeTransaction(scanner);
-                    case "close_account" -> applicationService.closeAccount(scanner);
-                    case "help" -> printCommands();
-                    case "quit" -> quit=true;
+                    case "create_user":
+                        applicationService.createUser(scanner);
+                        scanner.nextLine();
+                        break;
+                    case "create_user_account":
+                        applicationService.createUserAccount(scanner);
+                        break;
+                    case "create_user_savingsaccount":
+                        applicationService.createUserSavingsAccount(scanner);
+                        break;
+                    case "create_user_card":
+                        applicationService.createUserCard(scanner);
+                        break;
+                    case "print_user":
+                        applicationService.printUser(scanner);
+                        break;
+                    case "print_user_balance":
+                        applicationService.printUserBalance(scanner);
+                        break;
+                    case "print_user_accounts":
+                        applicationService.printUserAccounts(scanner);
+                        break;
+                    case "deposit_into_account":
+                        applicationService.depositIntoAccount(scanner);
+                        break;
+                    case "print_user_transactions":
+                        applicationService.getUserTransactions(scanner);
+                        break;
+                    case "make_transaction":
+                        applicationService.makeTransaction(scanner);
+                        break;
+                    case "close_account":
+                        applicationService.closeAccount(scanner);
+                        break;
+                    case "help":
+                        printCommands();
+                        break;
+                    case "quit":
+                        quit = true;
+                        break;
+                    default:
+                        System.out.println("Wrong command");
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 System.out.println(e.toString());
             }
         }

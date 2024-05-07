@@ -19,10 +19,7 @@ public class AccountRepositoryService {
 
     public List<Account> getAccounts() throws SQLException{
         List<Account> accounts = accountDAO.read();
-        if (!accounts.isEmpty()) {
-            for (Account account : accounts)
-                System.out.println(account.getName() + " : " + account.getIBAN());
-        } else {
+        if (accounts.isEmpty()){
             System.out.println("No accounts registered!");
         }
 
@@ -31,10 +28,7 @@ public class AccountRepositoryService {
 
     public List<SavingsAccount> getSavingsAccounts() throws SQLException{
         List<SavingsAccount> savingsAccounts = savingsAccountDAO.read();
-        if (!savingsAccounts.isEmpty()) {
-            for (SavingsAccount account : savingsAccounts)
-                System.out.println(account.getName() + " : " + account.getIBAN());
-        } else {
+        if (savingsAccounts.isEmpty()){
             System.out.println("No savings accounts registered!");
         }
 

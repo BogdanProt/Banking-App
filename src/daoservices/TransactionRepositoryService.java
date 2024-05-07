@@ -22,14 +22,10 @@ public class TransactionRepositoryService {
     public List<Transaction> getTransactions() throws SQLException {
         List<Transaction> transactions = transactionDAO.read();
 
-        if (!transactions.isEmpty()) {
-            for (Transaction trans : transactions)
-                System.out.println(trans.getFromIBAN() + " -> " + trans.getToIBAN() + " on " + trans.getIssuedDate());
-        }
-        else {
+        if (transactions.isEmpty()){
             System.out.println("No transactions registered!");
         }
-        return null;
+        return transactions;
     }
 
     public List<Transaction> getTransactionsByDate(Date date) throws SQLException{

@@ -6,6 +6,7 @@ import model.card.*;
 import model.account.*;
 import model.user.*;
 import utils.*;
+import static utils.Constants.*;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -40,11 +41,13 @@ public class ApplicationService {
         if (userDatabaseService.getNumberOfUsers() == 0) {
             throw new Exception("No users have beed added!");
         } else if (userDatabaseService.getNumberOfUsers() == 1) {
+            FileManagement.scriereFisierChar(AUDIT_FILE, "read user " + userDatabaseService.getUserByID(1).getFirstName() + " " + userDatabaseService.getUserByID(1).getLastName());
             return userDatabaseService.getUserByID(1);
         } else {
             int noUsers = userDatabaseService.getNumberOfUsers();
             System.out.println("User id: [1-" + noUsers + "]:");
             int id = Integer.parseInt(scanner.nextLine());
+            FileManagement.scriereFisierChar(AUDIT_FILE, "read user " + userDatabaseService.getUserByID(id).getFirstName() + " " + userDatabaseService.getUserByID(id).getLastName());
             return userDatabaseService.getUserByID(id);
         }
     }
@@ -60,6 +63,7 @@ public class ApplicationService {
         Account newAccount = accountSeparation.createAccount(newUser.getFirstName() + " " + newUser.getLastName(), newUser.getUserID());
         accountDatabaseService.addAccount(newAccount);
         System.out.println("User created");
+        FileManagement.scriereFisierChar(AUDIT_FILE, "create user " + newUser.getFirstName() + " " + newUser.getLastName());
     }
 
 
@@ -75,6 +79,7 @@ public class ApplicationService {
         if (account.getUserID() != user.getUserID()) {
             throw new Exception("IBAN associated with a different account!");
         }
+        FileManagement.scriereFisierChar(AUDIT_FILE, "read account " + account.getIBAN());
         return account;
     }
 
@@ -85,9 +90,9 @@ public class ApplicationService {
             totalBalance += acc.getBalance();
         }
         System.out.println("The total balance of the given user is " + totalBalance);
+        FileManagement.scriereFisierChar(AUDIT_FILE, "read all accounts");
     }
 
-    //DONE
     public void printUserAccounts(Scanner scanner) throws Exception {
         List<Account> userAccounts = filterAccounts(scanner, accountDatabaseService.getAccounts());
         System.out.println("Accounts: ");
@@ -95,6 +100,7 @@ public class ApplicationService {
         List<SavingsAccount> savings = filterSavingsAccounts(scanner, accountDatabaseService.getSavingsAccounts());
         System.out.println("Saving accounts: ");
         System.out.println(savings.toString());
+        FileManagement.scriereFisierChar(AUDIT_FILE, "read all accounts and savings accounts ");
     }
 
     public void createUserAccount(Scanner scanner) throws Exception {
@@ -105,6 +111,7 @@ public class ApplicationService {
         accountDatabaseService.addAccount(newAccount);
         accountsMap.put(newAccount.getIBAN(), newAccount);
         System.out.println("Account created");
+        FileManagement.scriereFisierChar(AUDIT_FILE, "create account " + newAccount.getIBAN());
     }
 
     public void createUserSavingsAccount(Scanner scanner) throws Exception {
@@ -114,6 +121,7 @@ public class ApplicationService {
         SavingsAccount newSavingsAccount = accountSeparation.createSavingsAccount(name, user.getUserID());
         accountDatabaseService.addAccount(newSavingsAccount);
         System.out.println("Savings account created");
+        FileManagement.scriereFisierChar(AUDIT_FILE, "create savings account " + newSavingsAccount.getIBAN());
     }
 
     public void createUserCard(Scanner scanner) throws Exception {
@@ -129,10 +137,12 @@ public class ApplicationService {
             Card card = cardSeparation.createMasterCard(account.getIBAN(), account.getName());
             cardDatabaseService.addCard(card);
             System.out.println("Card created");
+            FileManagement.scriereFisierChar(AUDIT_FILE, "create mastercard " + card.getCardID());
         } else if (selection.toLowerCase().equals("visa")) {
             Card card = cardSeparation.createVisaCard(account.getIBAN(), account.getName());
             cardDatabaseService.addCard(card);
             System.out.println("Card created");
+            FileManagement.scriereFisierChar(AUDIT_FILE, "create visa " + card.getCardID());
         } else {
             System.out.println("Invalid card type!");
         }
@@ -145,6 +155,7 @@ public class ApplicationService {
         userAccounts.get(0).setBalance(userAccounts.get(0).getBalance() + balance);
         accountDatabaseService.updateAccount(userAccounts.get(0));
         System.out.println("Deposit made successfully!");
+        FileManagement.scriereFisierChar(AUDIT_FILE, "update account " + userAccounts.get(0).getIBAN());
     }
 
     public void makeTransaction(Scanner scanner) throws Exception {
@@ -182,7 +193,9 @@ public class ApplicationService {
             accountDatabaseService.updateAccount(fromAccount);
             accountDatabaseService.updateAccount(toAccount);
         }
-
+        FileManagement.scriereFisierChar(AUDIT_FILE, "update account " + fromAccount.getIBAN());
+        FileManagement.scriereFisierChar(AUDIT_FILE, "update account " + toAccount.getIBAN());
+        FileManagement.scriereFisierChar(AUDIT_FILE, "create transaction " + newTransaction.getFromIBAN() + " -> " + newTransaction.getToIBAN());
         System.out.println("Transaction finished!");
     }
 
@@ -197,12 +210,15 @@ public class ApplicationService {
         String typeOfAccount = scanner.nextLine();
         accountDatabaseService.removeAccount(typeOfAccount, account.getIBAN());
         System.out.println("Account closed successfully!");
+        FileManagement.scriereFisierChar(AUDIT_FILE, "delete account " + account.getIBAN());
     }
 
 
     public void getUserTransactions(Scanner scanner) throws Exception {
         var user = getUserFromInput(scanner);
         System.out.println(filterTransactions(user, accountDatabaseService.getAccounts(), transactionDatabaseService.getTransactions()));
+        FileManagement.scriereFisierChar(AUDIT_FILE, "read all transactions ");
+        FileManagement.scriereFisierChar(AUDIT_FILE, "read all accounts ");
     }
 
     public List<Transaction> filterTransactions(User user, List<Account> allAccounts, List<Transaction> allTransactions) throws Exception {
