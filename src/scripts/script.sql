@@ -1,6 +1,5 @@
 create database Banking;
 
-
 CREATE TABLE `Banking`.`Account` (
     `IBAN` VARCHAR(45) NOT NULL,
     `swift` VARCHAR(45) NULL,
