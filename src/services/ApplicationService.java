@@ -62,6 +62,7 @@ public class ApplicationService {
         userDatabaseService.addUser(newUser);
         Account newAccount = accountSeparation.createAccount(newUser.getFirstName() + " " + newUser.getLastName(), newUser.getUserID());
         accountDatabaseService.addAccount(newAccount);
+        accountsMap.put(newAccount.getIBAN(), newAccount);
         System.out.println("User created");
         FileManagement.scriereFisierChar(AUDIT_FILE, "create user " + newUser.getFirstName() + " " + newUser.getLastName());
     }
